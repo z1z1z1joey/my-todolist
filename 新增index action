@@ -1,0 +1,6 @@
+class TodosController < ApplicationController
+  #新增index action
+  def index
+    @todos = Todo.all
+  end
+end

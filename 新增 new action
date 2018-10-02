@@ -1,0 +1,17 @@
+ #新增 new action
+  def new
+    @todo = Todo.new
+  end
+  #新增 create action
+  def create
+    @todo = Todo.new(todo_params)
+    @todo.save
+  
+    redirect_to todos_url
+  end
+   
+  private
+  
+  def todo_params
+      params.require(:todo).permit(:title, :date, :note)
+  end

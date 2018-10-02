@@ -1,0 +1,551 @@
+<HTML>
+<HEAD>
+  <TITLE>實作二 我的備忘錄.html</TITLE>
+  <meta NAME = "GENERATOR"          CONTENT = "IHMC CmapTools vr. 4.12 ">
+  <meta NAME = "KEYWORDS"           CONTENT = "陳咨諺, 概念图, cmap, CmapTools, IHMC, 實作二 我的備忘錄,  步驟ㄧ、完成新增事件功能(create) 1.Controller新增 new、create action 2.View新增new.html.erb,  步驟三、完成編輯事件功能(update) 1.Controller 新增 edit、update action 2.View新增edit頁面,  步驟四、更新路由設定 在/config/routes.rb中 輸入程式碼：root "todos#index",  完成CRUD,  步驟三、執行資料庫遷移 輸入指令：rails db:migrate,  步驟一、Model加入驗證 1.新增驗證要求(models/todo.rb) 2.Controller新增規則,  步驟二、新增index action 在 /app/controllers/todos_controller.rb 中 寫入程式碼,  建立 資料模型,  打造第一個頁面,  優化,  步驟五、啟動Rails伺服器,  步驟一、設定RESTful路由 在/config/routes.rb中 輸入程式碼：resources :todos,  步驟五、確認資料輸入 輸入指令：Todo.count Todo.first,  步驟二、建立資料表 在/db/migrate/2017xxxxxxxxxx_create_todos.rb 建立欄位title(string)、date(date)、note(text),  實作二、我的備忘錄,  步驟四、完成刪除事件功能(delete) 1.Controller新增destroy action,  步驟三、重構程式碼 1.新增private function 2.透過private function取代重複的code 3.filter使程式更簡化 4.刪除重複的code,  步驟一、建立controller 輸入指令：rails generate controller todos 在 /app/controllers 查看,  步驟二、確認路由設定 輸入指令：rails routes,  步驟三、建立index.html.erb 在 /app/views/todos/index.html.erb 中 寫入程式碼">
+  <meta NAME = "DESCRIPTION"        CONTENT = "此概念图以 IHMC CmapTools 创建, 内含信息有关于: 實作二 我的備忘錄, 打造第一個頁面 包括 步驟二、新增index action 在 /app/controllers/todos_controller.rb 中 寫入程式碼, 優化 包括 步驟二、顯示錯誤訊息 1.在new.html.erb、edit.html.erb 寫入錯誤訊息程式碼, 優化 包括 步驟一、Model加入驗證 1.新增驗證要求(models/todo.rb) 2.Controller新增規則, 建立 資料模型 包括 步驟五、確認資料輸入 輸入指令：Todo.count Todo.first, 打造第一個頁面 包括 步驟五、啟動Rails伺服器, 完成CRUD 包括 步驟二、完成讀取個別事件功能(read) 1.Controller 新增 show action 2.View新增show.html.erb, 路由設定 包括 步驟二、確認路由設定 輸入指令：rails routes, 打造第一個頁面 包括 步驟一、建立controller 輸入指令：rails generate controller todos 在 /app/controllers 查看, 打造第一個頁面 包括 步驟三、建立index.html.erb 在 /app/views/todos/index.html.erb 中 寫入程式碼, 建立 資料模型 包括 步驟三、執行資料庫遷移 輸入指令：rails db:migrate, 路由設定 包括 步驟一、設定RESTful路由 在/config/routes.rb中 輸入程式碼：resources :todos, 完成CRUD 包括 步驟三、完成編輯事件功能(update) 1.Controller 新增 edit、update action 2.View新增edit頁面, 實作二、我的備忘錄 包括 建立 資料模型, 建立 資料模型 包括 步驟四、新增種子資料 輸入指令：rails console進入Rails console Todo.destroy_all清空資料 Todo.create(title:"校慶",date:"2018-05-01" ,note:"校慶記得來學校"), 完成CRUD 包括 步驟ㄧ、完成新增事件功能(create) 1.Controller新增 new、create action 2.View新增new.html.erb, 建立 資料模型 包括 步驟一、建立Model 輸入指令：rails generate model todo, 優化 包括 步驟三、重構程式碼 1.新增private function 2.透過private function取代重複的code 3.filter使程式更簡化 4.刪除重複的code, 實作二、我的備忘錄 包括 路由設定, 打造第一個頁面 包括 步驟四、更新路由設定 在/config/routes.rb中 輸入程式碼：root "todos#index", 實作二、我的備忘錄 包括 完成CRUD">
+  <meta NAME = "AUTHOR"             CONTENT = "IHMC CmapTools">
+  <meta HTTP-EQUIV = "Content-Type" CONTENT = "text/html; charset = UTF-8">
+  <script LANGUAGE="JavaScript1.2">
+  <!--
+    //  PopUp --
+    //  Institute for Human and Machine Cognition, http://www.ihmc.us/
+    //  CmapTools, Version 4.11, http://cmap.ihmc.us/
+    //  Modify by: CmapTools Developers, cmapsupport@ihmc.us
+    //  Date: 12/14/2006
+
+    var IE = 0;
+    var IE4PC = 0;
+    var NS = 0;
+    var GECKO = 0;
+
+    var openpopups = new Array();
+
+    if (document.all) {                 // Internet Explorer Detected
+	   IE = true;	
+    }
+    else if (document.layers) {         // Netscape Navigator Detected
+	   NS = true;	
+    }
+    else if (document.getElementById) { // Netscape 6 Detected
+       GECKO = true;
+    }
+    else {
+	   alert("Unrecognized Browser Detected::\nSorry, your browser is not compatible.");
+    }
+
+    if (IE)
+    {
+	   OS = navigator.platform;
+	   VER = new String(navigator.appVersion);
+	   VER = VER.substr (0, VER.indexOf(" "));
+	   if ((VER < 4.8) && (OS == "Win32")) 
+	   {
+	       IE4PC = 1;
+	   }
+    }
+
+    function handleResize() {
+	    location.reload();
+	    return false;
+    }
+
+
+    if ((NS) && (navigator.platform == "MacPPC")) {
+	   window.captureEvents (Event.RESIZE);
+	   window.onresize = handleResize;
+    }
+
+    function openResource(event, resourcePath, resourceName, resourceType)
+    {
+	   var newwindow;
+
+       // Resource MIMETypes are enumerated as follows: 
+       // cMap     = Undefined
+       // Image    = 0
+       // Video    = 1
+       // Text     = 2
+       // Audio    = 3
+
+       popDown();
+
+	   switch (resourceType) 
+	   {
+	    case 0:     //Image
+                    newwindow = window.open (resourcePath,resourceName);
+                    newwindow.onBlur = newwindow.focus()
+                    var text ='<center><img src=\"';
+                    text += resourcePath;
+                    text +='\"> </center>';
+             break;
+		
+	    case 1:  text   // Video
+		     newwindow = window.open (resourcePath,resourceName);
+                     newwindow.onBlur = newwindow.focus()
+                     var text ='<embed src=\"';
+                     text += resourcePath;
+                     text +='\" autostart=true> </embed> ';
+             break;
+
+	    case 2:      // Text or Unknown 
+		     newwindow = window.open(resourcePath,resourceName);
+                     newwindow.onBlur = newwindow.focus()
+              break;
+
+	    case 3:       // Audio
+                    newwindow = window.open (resourcePath,resourceName);
+                    newwindow.onBlur = newwindow.focus()
+                    var text ='<embed src=\"';
+                    text += resourcePath;
+                    text +='\" autoplay=true> </embed> ';
+             break;
+
+	    case 4:
+                    newwindow = window.open(resourcePath,resourceName);
+                    newwindow.onBlur = newwindow.focus()
+	     break;
+	    }
+        return;
+    }
+
+
+
+    function popUpEvt(event, popupName)
+    {
+	popDown();
+
+	if (GECKO)
+	{
+	    document.getElementById(popupName).style.left = event.layerX;
+	    document.getElementById(popupName).style.top = event.layerY;
+	    document.getElementById(popupName).style.background = "#B3B3B3";
+	    document.getElementById(popupName).style.visibility = "visible";
+	    openpopups.push(popupName);
+	}
+	else if (NS) 
+	{
+	    document.layers[popupName].moveTo (event.pageX, event.pageY);
+	    document.layers[popupName].bgColor = "#B3B3B3";
+	    document.layers[popupName].visibility = "show";
+	    openpopups.push(popupName);
+	}
+	else // if (IE)
+	{
+	    window.event.cancelBubble = true;
+	    if (!IE4PC) {
+		document.all[popupName].style.backgroundColor = "#B3B3B3";
+	    }	
+	    document.all[popupName].style.left = window.event.clientX + document.body.scrollLeft;
+	    document.all[popupName].style.top = window.event.clientY + document.body.scrollTop;
+	    document.all[popupName].style.visibility = "visible";
+	    openpopups[openpopups.length] = popupName;
+	}
+	return false;
+    }
+
+    function popDown()
+    {
+	var popupname;
+	
+	for (var i = 0; i < openpopups.length; i++) 
+	{
+	    popupname = new String (openpopups[i]);      
+	    if (GECKO) {
+		document.getElementById(popupname).style.visibility = "hidden";
+	    }
+	    else if (NS) {
+		document.layers[popupname].visibility = "hide";
+	    }
+	    else {
+		document.all[popupname].style.visibility = "hidden";
+	    }
+	}
+	openpopups = new Array();
+	return;
+    }
+
+    function popDownNoGecko() 
+    {
+	var popupname;
+	for (var i = 0; i < openpopups.length; i++) 
+	{
+	    popupname = new String (openpopups[i]);      
+	    if (GECKO) {
+           //  document.getElementById(popupname).style.visibility = "hidden"; 
+	        return;   // erased for test purposes
+	    }  
+	    else if (NS) {
+	        document.layers[popupname].visibility = "hide";
+	    }
+	    else {
+	        document.all[popupname].style.visibility = "hidden";
+	    }
+	}
+	openpopups = new Array();
+        return;
+    }
+  //-->
+  </script>
+</HEAD>
+<BODY bgcolor="#FFFFFF" leftmargin="0" topmargin="0">
+<noscript>
+  <table width=90% cellpadding=10>
+    <tr>
+      <td bgcolor=ff4447>
+        <font color=000000 size=+1 face="helvetica">
+        <h1>WARNING:</h1>
+        <b>JavaScript is turned OFF.  None of the links on this concept map will <br>
+           work until it is reactivated.
+          <p>
+            <a href="http://cmap.ihmc.us/docs/EnablingJavaScript.html">
+                            If you need help turning JavaScript On, click here.
+            </a>
+          </p>
+        </b>
+      </td>
+    </tr>
+  </table>
+此概念图以 IHMC CmapTools 创建, 内含信息有关于: 實作二 我的備忘錄, 打造第一個頁面 包括 步驟二、新增index action 在 /app/controllers/todos_controller.rb 中 寫入程式碼, 優化 包括 步驟二、顯示錯誤訊息 1.在new.html.erb、edit.html.erb 寫入錯誤訊息程式碼, 優化 包括 步驟一、Model加入驗證 1.新增驗證要求(models/todo.rb) 2.Controller新增規則, 建立 資料模型 包括 步驟五、確認資料輸入 輸入指令：Todo.count Todo.first, 打造第一個頁面 包括 步驟五、啟動Rails伺服器, 完成CRUD 包括 步驟二、完成讀取個別事件功能(read) 1.Controller 新增 show action 2.View新增show.html.erb, 路由設定 包括 步驟二、確認路由設定 輸入指令：rails routes, 打造第一個頁面 包括 步驟一、建立controller 輸入指令：rails generate controller todos 在 /app/controllers 查看, 打造第一個頁面 包括 步驟三、建立index.html.erb 在 /app/views/todos/index.html.erb 中 寫入程式碼, 建立 資料模型 包括 步驟三、執行資料庫遷移 輸入指令：rails db:migrate, 路由設定 包括 步驟一、設定RESTful路由 在/config/routes.rb中 輸入程式碼：resources :todos, 完成CRUD 包括 步驟三、完成編輯事件功能(update) 1.Controller 新增 edit、update action 2.View新增edit頁面, 實作二、我的備忘錄 包括 建立 資料模型, 建立 資料模型 包括 步驟四、新增種子資料 輸入指令：rails console進入Rails console Todo.destroy_all清空資料 Todo.create(title:"校慶",date:"2018-05-01" ,note:"校慶記得來學校"), 完成CRUD 包括 步驟ㄧ、完成新增事件功能(create) 1.Controller新增 new、create action 2.View新增new.html.erb, 建立 資料模型 包括 步驟一、建立Model 輸入指令：rails generate model todo, 優化 包括 步驟三、重構程式碼 1.新增private function 2.透過private function取代重複的code 3.filter使程式更簡化 4.刪除重複的code, 實作二、我的備忘錄 包括 路由設定, 打造第一個頁面 包括 步驟四、更新路由設定 在/config/routes.rb中 輸入程式碼：root "todos#index", 實作二、我的備忘錄 包括 完成CRUD
+
+</noscript>
+
+<map name="實作二 我的備忘錄.html">
+  <area shape="rect"
+        href="1SCM8X8JQI28HZ564I4CJIx-unknownIx-unknown"
+        onClick="popUpEvt(event,'1SCM8X8JQI28HZ564I4CJIx-unknownIx-unknown'); return false;"
+        coords="1304,271,1322,289">
+  <area shape="rect"
+        href="1SDZD715SI1NBSDK1I120ItextIplain"
+        onClick="popUpEvt(event,'1SDZD715SI1NBSDK1I120ItextIplain'); return false;"
+        coords="1401,438,1419,456">
+  <area shape="rect"
+        href="1SCM10BDLIL1CTR4I3S8Ix-unknownIx-unknown"
+        onClick="popUpEvt(event,'1SCM10BDLIL1CTR4I3S8Ix-unknownIx-unknown'); return false;"
+        coords="957,501,975,519">
+  <area shape="rect"
+        href="1SCM8TMM1I1DBY3XKI4BFIimage"
+        onClick="popUpEvt(event,'1SCM8TMM1I1DBY3XKI4BFIimage'); return false;"
+        coords="1479,193,1497,211">
+  <area shape="rect"
+        href="1SFKWJWW8ICYJ87I25LItextIplain"
+        onClick="popUpEvt(event,'1SFKWJWW8ICYJ87I25LItextIplain'); return false;"
+        coords="1710,272,1728,290">
+  <area shape="rect"
+        href="1SCLYFVCYIR17W5QI3DNIx-unknownIx-unknown"
+        onClick="popUpEvt(event,'1SCLYFVCYIR17W5QI3DNIx-unknownIx-unknown'); return false;"
+        coords="925,337,943,355">
+  <area shape="rect"
+        href="1SCLWRXRZI15TDF3MI2S5Ix-unknownIx-unknown"
+        onClick="popUpEvt(event,'1SCLWRXRZI15TDF3MI2S5Ix-unknownIx-unknown'); return false;"
+        coords="538,250,556,268">
+  <area shape="rect"
+        href="1SCKJN6KBIN4FF89ICYIimage"
+        onClick="popUpEvt(event,'1SCKJN6KBIN4FF89ICYIimage'); return false;"
+        coords="1082,45,1100,63">
+  <area shape="rect"
+        href="1SCM8JX29I1Y29TLKI49XItextIplain"
+        onClick="popUpEvt(event,'1SCM8JX29I1Y29TLKI49XItextIplain'); return false;"
+        coords="1420,505,1438,523">
+  <area shape="rect"
+        href="1SFKXV9VRI1HJ870ZI381ItextIplain"
+        onClick="popUpEvt(event,'1SFKXV9VRI1HJ870ZI381ItextIplain'); return false;"
+        coords="1815,470,1833,488">
+  <area shape="rect"
+        href="1SCLZVVW1IQV1BMWI3LBIx-unknownIx-unknown"
+        onClick="popUpEvt(event,'1SCLZVVW1IQV1BMWI3LBIx-unknownIx-unknown'); return false;"
+        coords="944,418,962,436">
+  <area shape="rect"
+        href="1SCLXPDPYI20TNZF7I33ZIimage"
+        onClick="popUpEvt(event,'1SCLXPDPYI20TNZF7I33ZIimage'); return false;"
+        coords="683,173,701,191">
+  <area shape="rect"
+        href="1SFKXJ1QPI15L33Z5I2YZItextIplain"
+        onClick="popUpEvt(event,'1SFKXJ1QPI15L33Z5I2YZItextIplain'); return false;"
+        coords="1762,355,1780,373">
+  <area shape="rect"
+        href="1SDZ5J2JZI1723LD9IJCItextIplain"
+        onClick="popUpEvt(event,'1SDZ5J2JZI1723LD9IJCItextIplain'); return false;"
+        coords="1363,355,1381,373">
+</map>
+
+<center>
+  <table width=* height=* cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td valign=center align=center>
+        <img USEMAP="#實作二 我的備忘錄.html"
+             SRC="實作二 我的備忘錄.jpg"
+             ALIGN=middle
+             BORDER=0
+             onClick=popDown();>
+      </td>
+    </tr>
+    <tr>
+      <td VALIGN=top ALIGN=right>
+        <table>
+          <tr>
+            <td ALIGN=right VALIGN=middle>
+              <map NAME="CmapToolsTrademark">
+                <area SHAPE="rect"
+                      href="http://cmap.ihmc.us/"
+                      onClick="openResource(event,'http://cmap.ihmc.us/', 0, 2); return false;"
+                      coords="1,1,210,50">
+              </map>
+            </td>
+          </tr>
+          <tr>
+            <td  ALIGN=right VALIGN=middle>
+              <img USEMAP="#CmapToolsTrademark"
+                   SRC="CmapToolsTrademark.gif" 
+                   ALT="IHMC Cmap Tools Trademark" width="210" height="50"
+                   ALIGN=middle
+                   BORDER=0>
+            </td>
+            <td VALIGN=middle>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</center>
+</BODY>
+</HTML>
+<div id="1SCM8X8JQI28HZ564I4CJIx-unknownIx-unknown" style="POSITION: absolute; Z-INDEX: 20; VISIBILITY: hidden; left: 0; top: 0;">
+  <table border=1 cellpadding=1 cellspacing=0 bgcolor="#dddddd">
+    <tr>
+      <td nowrap><font face="Geneva, Arial" size=2>
+      <a href="建立表單頁面 "TITLE="">
+      建立表單頁面
+      </a>
+      </td>
+    </tr>
+    <tr>
+      <td nowrap><font face="Geneva, Arial" size=2>
+      <a href="新增 new action "TITLE="">
+      新增 new 、create action
+      </a>
+      </td>
+    </tr>
+  </table>
+</div>
+<div id="1SDZD715SI1NBSDK1I120ItextIplain" style="POSITION: absolute; Z-INDEX: 20; VISIBILITY: hidden; left: 0; top: 0;">
+  <table border=1 cellpadding=1 cellspacing=0 bgcolor="#dddddd">
+    <tr>
+      <td nowrap><font face="Geneva, Arial" size=2>
+      <a href="新增edit、update action.rtf "TITLE="">
+      新增edit、update action
+      </a>
+      </td>
+    </tr>
+    <tr>
+      <td nowrap><font face="Geneva, Arial" size=2>
+      <a href="編輯 edit 頁面.rtf "TITLE="">
+      編輯 edit 頁面
+      </a>
+      </td>
+    </tr>
+  </table>
+</div>
+<div id="1SCM10BDLIL1CTR4I3S8Ix-unknownIx-unknown" style="POSITION: absolute; Z-INDEX: 20; VISIBILITY: hidden; left: 0; top: 0;">
+  <table border=1 cellpadding=1 cellspacing=0 bgcolor="#dddddd">
+    <tr>
+      <td nowrap><font face="Geneva, Arial" size=2>
+      <a href="更新路由設定 "TITLE="">
+      更新路由設定
+      </a>
+      </td>
+    </tr>
+  </table>
+</div>
+<div id="1SCM8TMM1I1DBY3XKI4BFIimage" style="POSITION: absolute; Z-INDEX: 20; VISIBILITY: hidden; left: 0; top: 0;">
+  <table border=1 cellpadding=1 cellspacing=0 bgcolor="#dddddd">
+    <tr>
+      <td nowrap><font face="Geneva, Arial" size=2>
+      <a href="CRUR樣板.png "TITLE="">
+      CRUR樣板
+      </a>
+      </td>
+    </tr>
+    <tr>
+      <td nowrap><font face="Geneva, Arial" size=2>
+      <a href="控制器動作(Controller Actions).png "TITLE="">
+      控制器動作(Controller Actions)
+      </a>
+      </td>
+    </tr>
+  </table>
+</div>
+<div id="1SFKWJWW8ICYJ87I25LItextIplain" style="POSITION: absolute; Z-INDEX: 20; VISIBILITY: hidden; left: 0; top: 0;">
+  <table border=1 cellpadding=1 cellspacing=0 bgcolor="#dddddd">
+    <tr>
+      <td nowrap><font face="Geneva, Arial" size=2>
+      <a href="新增驗證要求.rtf "TITLE="">
+      新增驗證要求
+      </a>
+      </td>
+    </tr>
+    <tr>
+      <td nowrap><font face="Geneva, Arial" size=2>
+      <a href="Controller新增規則.rtf "TITLE="">
+      Controller新增規則
+      </a>
+      </td>
+    </tr>
+  </table>
+</div>
+<div id="1SCLYFVCYIR17W5QI3DNIx-unknownIx-unknown" style="POSITION: absolute; Z-INDEX: 20; VISIBILITY: hidden; left: 0; top: 0;">
+  <table border=1 cellpadding=1 cellspacing=0 bgcolor="#dddddd">
+    <tr>
+      <td nowrap><font face="Geneva, Arial" size=2>
+      <a href="新增index action "TITLE="">
+      新增index action
+      </a>
+      </td>
+    </tr>
+  </table>
+</div>
+<div id="1SCLWRXRZI15TDF3MI2S5Ix-unknownIx-unknown" style="POSITION: absolute; Z-INDEX: 20; VISIBILITY: hidden; left: 0; top: 0;">
+  <table border=1 cellpadding=1 cellspacing=0 bgcolor="#dddddd">
+    <tr>
+      <td nowrap><font face="Geneva, Arial" size=2>
+      <a href="設定RESTful路由 "TITLE="">
+      設定RESTful路由
+      </a>
+      </td>
+    </tr>
+  </table>
+</div>
+<div id="1SCKJN6KBIN4FF89ICYIimage" style="POSITION: absolute; Z-INDEX: 20; VISIBILITY: hidden; left: 0; top: 0;">
+  <table border=1 cellpadding=1 cellspacing=0 bgcolor="#dddddd">
+    <tr>
+      <td nowrap><font face="Geneva, Arial" size=2>
+      <a href="螢幕快照 2018-05-09 上午9.40.54.png "TITLE="">
+      使用者故事
+      </a>
+      </td>
+    </tr>
+    <tr>
+      <td nowrap><font face="Geneva, Arial" size=2>
+      <a href="功能列表.png "TITLE="">
+      功能列表
+      </a>
+      </td>
+    </tr>
+    <tr>
+      <td nowrap><font face="Geneva, Arial" size=2>
+      <a href="資料表設計.png "TITLE="">
+      資料表設計
+      </a>
+      </td>
+    </tr>
+  </table>
+</div>
+<div id="1SCM8JX29I1Y29TLKI49XItextIplain" style="POSITION: absolute; Z-INDEX: 20; VISIBILITY: hidden; left: 0; top: 0;">
+  <table border=1 cellpadding=1 cellspacing=0 bgcolor="#dddddd">
+    <tr>
+      <td nowrap><font face="Geneva, Arial" size=2>
+      <a href="新增destroy action.rtf "TITLE="">
+      新增destroy action
+      </a>
+      </td>
+    </tr>
+  </table>
+</div>
+<div id="1SFKXV9VRI1HJ870ZI381ItextIplain" style="POSITION: absolute; Z-INDEX: 20; VISIBILITY: hidden; left: 0; top: 0;">
+  <table border=1 cellpadding=1 cellspacing=0 bgcolor="#dddddd">
+    <tr>
+      <td nowrap><font face="Geneva, Arial" size=2>
+      <a href="新增private function.rtf "TITLE="">
+      新增private function
+      </a>
+      </td>
+    </tr>
+    <tr>
+      <td nowrap><font face="Geneva, Arial" size=2>
+      <a href="private func取代.rtf "TITLE="">
+      private func取代
+      </a>
+      </td>
+    </tr>
+    <tr>
+      <td nowrap><font face="Geneva, Arial" size=2>
+      <a href="filter使程式更簡化.rtf "TITLE="">
+      filter使程式更簡化
+      </a>
+      </td>
+    </tr>
+    <tr>
+      <td nowrap><font face="Geneva, Arial" size=2>
+      <a href="刪除重複的程式碼.rtf "TITLE="">
+      刪除重複的程式碼
+      </a>
+      </td>
+    </tr>
+  </table>
+</div>
+<div id="1SCLZVVW1IQV1BMWI3LBIx-unknownIx-unknown" style="POSITION: absolute; Z-INDEX: 20; VISIBILITY: hidden; left: 0; top: 0;">
+  <table border=1 cellpadding=1 cellspacing=0 bgcolor="#dddddd">
+    <tr>
+      <td nowrap><font face="Geneva, Arial" size=2>
+      <a href="編輯 index 頁面 "TITLE="">
+      編輯 index 頁面
+      </a>
+      </td>
+    </tr>
+  </table>
+</div>
+<div id="1SCLXPDPYI20TNZF7I33ZIimage" style="POSITION: absolute; Z-INDEX: 20; VISIBILITY: hidden; left: 0; top: 0;">
+  <table border=1 cellpadding=1 cellspacing=0 bgcolor="#dddddd">
+    <tr>
+      <td nowrap><font face="Geneva, Arial" size=2>
+      <a href="控制器動作(Controller Actions).png "TITLE="">
+      控制器動作(Controller Actions)
+      </a>
+      </td>
+    </tr>
+    <tr>
+      <td nowrap><font face="Geneva, Arial" size=2>
+      <a href="CRUR樣板.png "TITLE="">
+      CRUR樣板
+      </a>
+      </td>
+    </tr>
+    <tr>
+      <td nowrap><font face="Geneva, Arial" size=2>
+      <a href="RESTful路由器.png "TITLE="">
+      RESTful路由器
+      </a>
+      </td>
+    </tr>
+  </table>
+</div>
+<div id="1SFKXJ1QPI15L33Z5I2YZItextIplain" style="POSITION: absolute; Z-INDEX: 20; VISIBILITY: hidden; left: 0; top: 0;">
+  <table border=1 cellpadding=1 cellspacing=0 bgcolor="#dddddd">
+    <tr>
+      <td nowrap><font face="Geneva, Arial" size=2>
+      <a href="顯示錯誤訊息.rtf "TITLE="">
+      顯示錯誤訊息
+      </a>
+      </td>
+    </tr>
+  </table>
+</div>
+<div id="1SDZ5J2JZI1723LD9IJCItextIplain" style="POSITION: absolute; Z-INDEX: 20; VISIBILITY: hidden; left: 0; top: 0;">
+  <table border=1 cellpadding=1 cellspacing=0 bgcolor="#dddddd">
+    <tr>
+      <td nowrap><font face="Geneva, Arial" size=2>
+      <a href="編輯show頁面.rtf "TITLE="">
+      編輯show頁面
+      </a>
+      </td>
+    </tr>
+    <tr>
+      <td nowrap><font face="Geneva, Arial" size=2>
+      <a href="新增show action.rtf "TITLE="">
+      新增show action
+      </a>
+      </td>
+    </tr>
+  </table>
+</div>
+

@@ -1,0 +1,13 @@
+#建立表單頁面
+<%= form_for @todo, :url => todos_path do |f| %>
+  <%= f.label :title, "Title" %>
+  <%= f.text_field :title %>
+
+  <%= f.label :date, "Date" %>
+  <%= f.text_field :date %>
+
+  <%= f.label :note, "Note" %>
+  <%= f.text_area :note %>
+
+  <%= f.submit "Create" %>
+<% end %>
